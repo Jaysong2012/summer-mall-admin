@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import i18n from '@/lang'
 export default {
   computed: {
     language() {
@@ -29,7 +30,7 @@ export default {
       this.$i18n.locale = lang
       this.$store.dispatch('app/setLanguage', lang)
       this.$message({
-        message: 'Switch Language Success',
+        message: i18n.t('lang.switchLangSuccess'),
         type: 'success'
       })
     }

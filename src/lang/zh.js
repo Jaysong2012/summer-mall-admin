@@ -70,7 +70,11 @@ export default {
     Sysuser: '用户管理',
     Role: '角色管理',
     UserRole: '用户角色',
-    History: '操作历史'
+    History: '操作历史',
+    // Product Manage
+    ProductManage: '产品管理',
+    ProductCategoryManage: '产品分类管理',
+    ProductBrandManage: '产品品牌管理'
   },
   navbar: {
     logOut: '退出登录',
@@ -165,6 +169,10 @@ export default {
     documentation: '换肤文档',
     tips: 'Tips: 它区别于 navbar 上的 theme-pick, 是两种不同的换肤方法，各自有不同的应用场景，具体请参考文档。'
   },
+  lang: {
+    success: '成功',
+    switchLangSuccess: '切换语言成功'
+  },
   tagsView: {
     refresh: '刷新',
     close: '关闭',
@@ -199,6 +207,19 @@ export default {
       params: '参数',
       rsp: '响应',
       time: '时间'
+    }
+  },
+  product: {
+    productCategory: {
+      level: '级别',
+      icon: '图标',
+      keywords: '关键字',
+      sort: '排序',
+      description: '说明',
+      parent_id: '父级',
+      level_one: '一级',
+      level_two: '二级',
+      level_three: '三级'
     }
   },
   select: {

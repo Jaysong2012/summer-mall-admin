@@ -8,6 +8,7 @@ import Layout from '@/layout'
 
 /* Router Modules */
 import systemRouter from './modules/system'
+import productRouter from './modules/product'
 
 /** note: sub-menu only appear when children.length>=1
  *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -156,6 +157,7 @@ export const asyncRoutes = [
 
   /** when your routing map is too long, you can split it into small modules **/
   systemRouter,
+  productRouter,
 
   // {
   //   path: '/example',

@@ -71,7 +71,11 @@ export default {
     Sysuser: 'System User',
     Role: 'Role',
     UserRole: 'User Role',
-    History: 'History'
+    History: 'History',
+    // Product Manage
+    ProductManage: '产品管理',
+    ProductCategoryManage: '产品分类管理',
+    ProductBrandManage: '产品品牌管理'
   },
   navbar: {
     logOut: 'Log Out',
@@ -166,6 +170,10 @@ export default {
     documentation: 'Theme documentation',
     tips: 'Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.'
   },
+  lang: {
+    success: 'success',
+    switchLangSuccess: 'Switch Language Success'
+  },
   tagsView: {
     refresh: 'Refresh',
     close: 'Close',
@@ -189,6 +197,19 @@ export default {
         introduction: 'introduction',
         status: 'Status',
         sort: 'Sort'
+      }
+    },
+    product: {
+      productCategory: {
+        level: 'Level',
+        icon: 'Icon',
+        keywords: 'Keyword',
+        sort: 'Sort',
+        description: 'Description',
+        parent_id: 'Parent',
+        level_one: 'Level One',
+        level_two: 'Level two',
+        level_three: 'Level Three'
       }
     },
     role: {

@@ -24,7 +24,7 @@ service.interceptors.request.use(
   error => {
     // Do something with request error
     console.log(error) // for debug
-    Promise.reject(error)
+    return Promise.reject(error)
   }
 )
 
@@ -65,7 +65,7 @@ service.interceptors.response.use(
       if (res.returnCode === '000022') {
         router.push('/401')
       }
-      return Promise.reject('error')
+      return Promise.reject(res.returnMsg || 'error')
     } else {
       return res
     }
