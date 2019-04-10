@@ -73,6 +73,7 @@ export default {
     History: '操作历史',
     // Product Manage
     ProductManage: '产品管理',
+    BrandCategoryManage: '品牌分类管理',
     ProductCategoryManage: '产品分类管理',
     ProductBrandManage: '产品品牌管理'
   },
@@ -189,7 +190,7 @@ export default {
   system: {
     sysuser: {
       list: {
-        name: '用户名',
+        name: '名称',
         passwd: '密码',
         role: '角色',
         email: '邮箱',
@@ -220,6 +221,9 @@ export default {
       level_one: '一级',
       level_two: '二级',
       level_three: '三级'
+    },
+    productBrand: {
+      brandCategory: '品牌分类'
     }
   },
   select: {

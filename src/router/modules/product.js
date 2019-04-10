@@ -11,14 +11,20 @@ const productRouter = {
   },
   children: [
     {
-      path: 'productCategory/tree',
+      path: 'product-category/tree',
       component: () => import('@/views/product/product-category/Tree'),
       name: 'ProductCategoryManage',
       meta: { title: 'ProductCategoryManage' }
     },
     {
-      path: 'productBrand/list',
-      component: () => import('@/views/product/product-category/Tree'),
+      path: 'brand-category/list',
+      component: () => import('@/views/product/brand-category/List'),
+      name: 'BrandCategoryManage',
+      meta: { title: 'BrandCategoryManage' }
+    },
+    {
+      path: 'product-brand/list',
+      component: () => import('@/views/product/product-brand/List'),
       name: 'ProductBrandManage',
       meta: { title: 'ProductBrandManage' }
     }

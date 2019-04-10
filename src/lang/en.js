@@ -73,9 +73,10 @@ export default {
     UserRole: 'User Role',
     History: 'History',
     // Product Manage
-    ProductManage: '产品管理',
-    ProductCategoryManage: '产品分类管理',
-    ProductBrandManage: '产品品牌管理'
+    ProductManage: 'Product Manage',
+    BrandCategoryManage: 'Brand Category',
+    ProductCategoryManage: 'Product Category',
+    ProductBrandManage: 'Product Brand'
   },
   navbar: {
     logOut: 'Log Out',
@@ -210,6 +211,9 @@ export default {
         level_one: 'Level One',
         level_two: 'Level two',
         level_three: 'Level Three'
+      },
+      productBrand: {
+        brandCategory: 'Brand Category'
       }
     },
     role: {

@@ -65,6 +65,10 @@ service.interceptors.response.use(
       if (res.returnCode === '000022') {
         router.push('/401')
       }
+
+      if (res.returnCode === '000003') {
+        return res
+      }
       return Promise.reject(res.returnMsg || 'error')
     } else {
       return res
