@@ -75,7 +75,9 @@ export default {
     ProductManage: '产品管理',
     BrandCategoryManage: '品牌分类管理',
     ProductCategoryManage: '产品分类管理',
-    ProductBrandManage: '产品品牌管理'
+    ProductBrandManage: '产品品牌管理',
+    ProductAttributeCategoryManage: '属性分类管理',
+    ProductAttribueManage: '产品属性管理'
   },
   navbar: {
     logOut: '退出登录',
@@ -224,10 +226,23 @@ export default {
     },
     productBrand: {
       brandCategory: '品牌分类'
+    },
+    productAttribute: {
+      inputType: '录入方式',
+      inputList: '从列表中选择',
+      inputType_select: '从列表中选取',
+      inputType_input: '手工录入',
+      attributeType: '属性类型',
+      attributeType_attr: '属性',
+      attributeType_params: '参数',
     }
   },
   select: {
-    all: '全部'
+    all: '全部',
+    one: '唯一',
+    multi: '多选',
+    single: '单选',
+    type: '选择类型'
   },
   status: {
     forbidden: '禁用',

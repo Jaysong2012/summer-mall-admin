@@ -27,6 +27,18 @@ const productRouter = {
       component: () => import('@/views/product/product-brand/List'),
       name: 'ProductBrandManage',
       meta: { title: 'ProductBrandManage' }
+    },
+    {
+      path: 'product-attribute-categry/list',
+      component: () => import('@/views/product/product-attribute-category/List'),
+      name: 'ProductAttributeCategoryManage',
+      meta: { title: 'ProductAttributeCategoryManage' }
+    },
+    {
+      path: 'product-attribute/list',
+      component: () => import('@/views/product/product-attribute/List'),
+      name: 'ProductAttribueManage',
+      meta: { title: 'ProductAttribueManage' }
     }
   ]
 }

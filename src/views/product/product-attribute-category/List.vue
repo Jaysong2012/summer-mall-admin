@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { listBrandCategory, statusBrandCategory } from '@/api/brandCategory'
+import { listProductAttributeCategory, statusProductAttributeCategory } from '@/api/productAttributeCategory'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import i18n from '@/lang'
@@ -101,7 +101,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      listBrandCategory(this.listQuery).then(response => {
+      listProductAttributeCategory(this.listQuery).then(response => {
         if (response.returnCode === '000000') {
           this.list = response.data.list
           this.total = response.data.total
@@ -133,7 +133,7 @@ export default {
       const obj = {}
       obj.id = row.id
       obj.status = status
-      statusBrandCategory(obj).then(response => {
+      statusProductAttributeCategory(obj).then(response => {
         if (response.returnCode === '000000') {
           row.status = status
           this.$message({

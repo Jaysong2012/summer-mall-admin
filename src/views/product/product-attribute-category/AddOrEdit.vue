@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { saveBrandCategory } from '@/api/brandCategory'
+import { saveProductAttributeCategory } from '@/api/productAttributeCategory'
 import waves from '@/directive/waves' // Waves directive
 import i18n from '@/lang'
 
@@ -64,7 +64,7 @@ export default {
       this.$emit('handleDialogVisible', visible)
     },
     save() {
-      saveBrandCategory(this.item).then(response => {
+      saveProductAttributeCategory(this.item).then(response => {
         if (response.returnCode === '000000') {
           this.handleDialogVisible(false)
           this.$emit('getList', 0)

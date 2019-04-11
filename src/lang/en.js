@@ -76,7 +76,9 @@ export default {
     ProductManage: 'Product Manage',
     BrandCategoryManage: 'Brand Category',
     ProductCategoryManage: 'Product Category',
-    ProductBrandManage: 'Product Brand'
+    ProductBrandManage: 'Product Brand',
+    ProductAttributeCategoryManage: 'Product Attribute Category',
+    ProductAttribueManage: 'Product Attribute'
   },
   navbar: {
     logOut: 'Log Out',
@@ -214,6 +216,15 @@ export default {
       },
       productBrand: {
         brandCategory: 'Brand Category'
+      },
+      productAttribute: {
+        inputType: 'Input Type',
+        inputList: 'Input List',
+        inputType_select: 'Select',
+        inputType_input: 'Input',
+        attributeType: 'Attr Type',
+        attributeType_attr: 'attr',
+        attributeType_params: 'Param',
       }
     },
     role: {
@@ -228,7 +239,11 @@ export default {
     }
   },
   select: {
-    all: 'All'
+    all: 'All',
+    one: 'One',
+    multi: 'Multi',
+    single: 'Single',
+    type: 'Select Type'
   },
   status: {
     forbidden: 'Forbidden',

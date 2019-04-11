@@ -1,6 +1,8 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
+      <product-attribute-category-select :selected-id="listQuery.categoryId" v-on:handleIdSelectChange="handleIdSelectChange"></product-attribute-category-select>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         {{ $t('table.add') }}
       </el-button>
@@ -25,10 +27,14 @@
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('product.productCategory.icon')" min-width="120px" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.icon }}</span>
-        </template>
+      <el-table-column :label="$t('select.type')" width="120" align="center">
+        <template slot-scope="scope">{{scope.row.selectType|selectTypeFilter}}</template>
+      </el-table-column>
+      <el-table-column :label="$t('product.productAttribute.inputType')" width="150" align="center">
+        <template slot-scope="scope">{{scope.row.inputType|inputTypeFilter}}</template>
+      </el-table-column>
+      <el-table-column :label="$t('product.productAttribute.inputList')" align="center">
+        <template slot-scope="scope">{{scope.row.inputList}}</template>
       </el-table-column>
       <el-table-column :label="$t('product.productCategory.description')" min-width="120px" align="center">
         <template slot-scope="scope">
@@ -59,16 +65,17 @@
 </template>
 
 <script>
-import { listBrandCategory, statusBrandCategory } from '@/api/brandCategory'
+import { listProductAttribute, statusProductAttribute } from '@/api/productAttribute'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import i18n from '@/lang'
 import { Message } from 'element-ui'
 import AddOrEdit from './AddOrEdit'
+import ProductAttributeCategorySelect from '@/components/Product/ProductAttributeCategorySelect'
 
 export default {
   name: 'List',
-  components: { Pagination, AddOrEdit },
+  components: { Pagination, AddOrEdit, ProductAttributeCategorySelect },
   directives: { waves },
   filters: {
     statusFilter(status) {
@@ -77,6 +84,22 @@ export default {
         1: i18n.t('status.enable')
       }
       return statusMap[status]
+    },
+    inputTypeFilter(value) {
+      if (value === 1) {
+        return i18n.t('product.productAttribute.inputType_select')
+      } else {
+        return i18n.t('product.productAttribute.inputType_input')
+      }
+    },
+    selectTypeFilter(value) {
+      if (value === 1) {
+        return i18n.t('select.single')
+      } else if (value === 2) {
+        return i18n.t('select.multi')
+      } else {
+        return i18n.t('select.one')
+      }
     }
   },
   data() {
@@ -89,6 +112,7 @@ export default {
       listQuery: {
         currentPage: 1,
         pageSize: 20,
+        categoryId: null,
         status: 1
       },
       statusOptions: [{ label: i18n.t('status.forbidden'), key: 0 }, { label: i18n.t('status.enable'), key: 1 }],
@@ -101,7 +125,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      listBrandCategory(this.listQuery).then(response => {
+      listProductAttribute(this.listQuery).then(response => {
         if (response.returnCode === '000000') {
           this.list = response.data.list
           this.total = response.data.total
@@ -133,7 +157,7 @@ export default {
       const obj = {}
       obj.id = row.id
       obj.status = status
-      statusBrandCategory(obj).then(response => {
+      statusProductAttribute(obj).then(response => {
         if (response.returnCode === '000000') {
           row.status = status
           this.$message({
@@ -153,6 +177,9 @@ export default {
     },
     handleDialogVisible(val) {
       this.dialogVisible = val
+    },
+    handleIdSelectChange(id) {
+      this.listQuery.categoryId = id
     }
   }
 }
