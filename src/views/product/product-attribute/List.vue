@@ -27,6 +27,9 @@
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('product.productAttribute.attributeType')" width="120" align="center">
+        <template slot-scope="scope">{{scope.row.type|typeFilter}}</template>
+      </el-table-column>
       <el-table-column :label="$t('select.type')" width="120" align="center">
         <template slot-scope="scope">{{scope.row.selectType|selectTypeFilter}}</template>
       </el-table-column>
@@ -86,7 +89,7 @@ export default {
       return statusMap[status]
     },
     inputTypeFilter(value) {
-      if (value === 1) {
+      if (value === 0) {
         return i18n.t('product.productAttribute.inputType_select')
       } else {
         return i18n.t('product.productAttribute.inputType_input')
@@ -99,6 +102,13 @@ export default {
         return i18n.t('select.multi')
       } else {
         return i18n.t('select.one')
+      }
+    },
+    typeFilter(value) {
+      if (value === 1) {
+        return i18n.t('product.productAttribute.attributeType_attr')
+      } else if (value === 2) {
+        return i18n.t('product.productAttribute.attributeType_params')
       }
     }
   },

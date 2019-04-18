@@ -23,3 +23,11 @@ export function saveProductBrand(data) {
     data
   })
 }
+
+export function conditionProuctBrandList(params) {
+  return request({
+    url: '/condition/product-brand/list',
+    method: 'post',
+    params: params
+  })
+}

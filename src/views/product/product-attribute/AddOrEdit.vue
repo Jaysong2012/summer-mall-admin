@@ -87,8 +87,8 @@ export default {
       }
     },
     inputListFormat: function(newValue, oldValue) {
-      this.item.inputList = newValue.replace(/\n/g, ',')
-      this.inputListFormat = newValue.replace(/,/g, '\n')
+      this.item.inputList = String(newValue).replace(/\n/g, ',')
+      this.inputListFormat = String(newValue).replace(/,/g, '\n')
     }
   },
   methods: {

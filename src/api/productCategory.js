@@ -8,10 +8,19 @@ export function conditionProductCategoryList(data) {
   })
 }
 
-export function fetchProductCategoryTree() {
+export function conditionProductCategoryTree() {
   return request({
     url: '/product/product-category/tree',
     method: 'post'
+  })
+}
+
+export function conditionSelectedProductCategoryIdTree(id) {
+  const data = { id: id }
+  return request({
+    url: '/product/product-category/id-tree',
+    method: 'post',
+    data: data
   })
 }
 

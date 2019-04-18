@@ -11,6 +11,19 @@ const productRouter = {
   },
   children: [
     {
+      path: 'product/list',
+      component: () => import('@/views/product/product/List'),
+      name: 'ProductManage',
+      meta: { title: 'ProductManage' }
+    },
+    {
+      path: 'product/add-or-edit',
+      component: () => import('@/views/product/product/AddOrEdit'),
+      hidden: true,
+      name: 'ProductManage',
+      meta: { title: 'ProductManage' }
+    },
+    {
       path: 'product-category/tree',
       component: () => import('@/views/product/product-category/Tree'),
       name: 'ProductCategoryManage',

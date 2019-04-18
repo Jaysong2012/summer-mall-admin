@@ -1,6 +1,8 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
+      <product-category-select :selected-id="listQuery.categoryId" v-on:handleIdSelectChange="handleIdSelectChange"></product-category-select>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         {{ $t('table.add') }}
       </el-button>
@@ -10,31 +12,29 @@
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
-      row-key="id"
       border
       fit
       highlight-current-row
       style="width: 100%;"
-      @sort-change="sortChange"
     >
-      <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">
+      <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.name')" min-width="120px" align="center">
+      <el-table-column :label="$t('system.sysuser.list.name')" min-width="80px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('product.productCategory.level')" min-width="120px" align="center">
+      <el-table-column :label="$t('product.productCategory.icon')" min-width="120px" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.level | levelFilter">{{ scope.row.level | levelFilter }}</el-tag>
+          <span>{{ scope.row.icon }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('product.productCategory.keywords')" min-width="120px" align="center">
+      <el-table-column :label="$t('product.productCategory.description')" min-width="120px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.keywords }}</span>
+          <span>{{ scope.row.description }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
@@ -45,8 +45,6 @@
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button v-if="scope.row.level < 2" size="mini" type="success" @click="handleAddChildren(scope.row)">{{ $t('table.add') }}
-          </el-button>
           <el-button v-if="scope.row.status!=0" size="mini" type="success" @click="handleModifyStatus(scope.row,0)">{{ $t('status.forbidden') }}
           </el-button>
           <el-button v-if="scope.row.status!=1" size="mini" type="danger" @click="handleModifyStatus(scope.row,1)">{{ $t('status.enable') }}
@@ -54,21 +52,23 @@
         </template>
       </el-table-column>
     </el-table>
-    <add-or-edit :item="item" :dialog-visible="dialogVisible" @getList="getList" @handleDialogVisible="handleDialogVisible" />
+
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.currentPage" :limit.sync="listQuery.pageSize" @pagination="getList" />
+
   </div>
 </template>
 
 <script>
-import { conditionProductCategoryTree, statusProductCategory } from '@/api/productCategory'
+import { listProduct, statusProduct } from '@/api/product'
 import waves from '@/directive/waves' // Waves directive
-import { parseTime } from '@/utils'
+import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import i18n from '@/lang'
 import { Message } from 'element-ui'
-import AddOrEdit from './AddOrEdit'
+import ProductCategorySelect from '@/components/Product/ProductCategorySelect'
 
 export default {
-  name: 'ProductCategoryTree',
-  components: { AddOrEdit },
+  name: 'List',
+  components: { Pagination, ProductCategorySelect },
   directives: { waves },
   filters: {
     statusFilter(status) {
@@ -77,24 +77,22 @@ export default {
         1: i18n.t('status.enable')
       }
       return statusMap[status]
-    },
-    levelFilter(level) {
-      const levelMap = {
-        0: i18n.t('product.productCategory.level_one'),
-        1: i18n.t('product.productCategory.level_two'),
-        2: i18n.t('product.productCategory.level_three')
-      }
-      return levelMap[level]
     }
   },
   data() {
     return {
       tableKey: 0,
-      item: { id: 0 },
       list: [],
+      item: { id: 0 },
+      total: 0,
       listLoading: true,
-      statusOptions: [{ label: i18n.t('status.forbidden'), key: 0}, {label: i18n.t('status.enable'), key: 1}],
-      dialogVisible: false
+      listQuery: {
+        currentPage: 1,
+        pageSize: 20,
+        categoryId: null,
+        status: 1
+      },
+      statusOptions: [{ label: i18n.t('status.forbidden'), key: 0 }, { label: i18n.t('status.enable'), key: 1 }],
     }
   },
   created() {
@@ -103,11 +101,13 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      conditionProductCategoryTree().then(response => {
+      listProduct(this.listQuery).then(response => {
         if (response.returnCode === '000000') {
-          this.list = response.data
+          this.list = response.data.list
+          this.total = response.data.total
         } else {
-          this.list = response.data
+          this.list = []
+          this.total = 0
           Message({
             message: response.returnMsg,
             type: 'error',
@@ -118,26 +118,20 @@ export default {
       })
     },
     handleFilter() {
+      this.listQuery.currentPage = 1
       this.getList()
     },
     handleCreate() {
-      this.item = { 'id': 0, parentId: 0, level: 0 }
-      this.dialogVisible = true
-    },
-    handleAddChildren(row) {
-      const childLevel = row.level + 1
-      this.item = { 'id': 0, parentId: row.id, level: childLevel }
-      this.dialogVisible = true
+      this.$router.push({ path: '/product/product/add-or-edit' })
     },
     handleUpdate(row) {
-      this.item = row
-      this.dialogVisible = true
+      this.$router.push({ path: '/product/product/add-or-edit', query: { id: row.id }})
     },
     handleModifyStatus(row, status) {
       const obj = {}
       obj.id = row.id
       obj.status = status
-      statusProductCategory(obj).then(response => {
+      statusProduct(obj).then(response => {
         if (response.returnCode === '000000') {
           row.status = status
           this.$message({
@@ -158,9 +152,13 @@ export default {
     handleDialogVisible(val) {
       this.dialogVisible = val
     },
-    sortChange(data) {
-      const { prop, order } = data
+    handleIdSelectChange(id) {
+      this.listQuery.categoryId = id
     }
   }
 }
 </script>
+
+<style scoped>
+
+</style>

@@ -11,9 +11,9 @@
         <el-input v-model="item.sort" :placeholder="$t('product.productCategory.sort')" />
       </el-form-item>
       <el-form-item :label="$t('product.productCategory.icon')">
-        <el-input v-model="item.logo" :placeholder="$t('product.productCategory.icon')" />
+        <!--<el-input v-model="item.logo" :placeholder="$t('product.productCategory.icon')" />-->
+        <single-upload v-model="item.logo" :placeholder="$t('product.productCategory.icon')" v-on:input="handleLogoSelect"/>
       </el-form-item>
-
       <el-form-item :label="$t('product.productCategory.description')">
         <el-input v-model="item.description" :placeholder="$t('product.productCategory.description')" />
       </el-form-item>
@@ -30,10 +30,11 @@ import { saveProductBrand } from '@/api/productBrand'
 import waves from '@/directive/waves' // Waves directive
 import i18n from '@/lang'
 import BrandCategorySelect from '@/components/Product/BrandCategorySelect'
+import SingleUpload from '@/components/Upload/SingleUpload'
 
 export default {
   name: 'AddOrEdit',
-  components: { BrandCategorySelect },
+  components: { BrandCategorySelect, SingleUpload},
   directives: { waves },
   filters: {
     dialogStatusFilter(dialogStatus) {
@@ -49,9 +50,12 @@ export default {
     return {
       selectedCategoryId: this.item.categoryId,
       data: [],
+      value: Object,
       visibale: this.dialogVisible,
       dialogStatus: 'create'
     }
+  },
+  computed: {
   },
   watch: {
     item(obj) {
@@ -95,6 +99,9 @@ export default {
     handleIdSelectChange(id) {
       this.selectedCategoryId = id
       this.item.categoryId = id
+    },
+    handleLogoSelect(logo) {
+      this.item.logo = logo
     }
   }
 }

@@ -23,3 +23,11 @@ export function saveProductAttribute(data) {
     data
   })
 }
+
+export function conditionProductAttributeList(params) {
+  return request({
+    url: '/condition/product-attribute/list',
+    method: 'post',
+    params: params
+  })
+}
