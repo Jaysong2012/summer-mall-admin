@@ -88,7 +88,6 @@ export default {
   },
   watch: {
     productParam(param) {
-      console.log(param)
       if (this.param.id === 0) {
 
       }

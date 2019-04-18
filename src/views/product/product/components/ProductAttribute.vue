@@ -87,7 +87,7 @@
             <div
               v-if="item.inputType===0">
               <div v-if="item.selectType === 2">
-                <el-checkbox-group v-model="selectProductParam[index].value">
+                <el-checkbox-group v-model="selectProductParam[index].values">
                   <el-checkbox
                     v-for="item in getInputListArr(item.inputList)"
                     :label="item"
@@ -96,7 +96,7 @@
                 </el-checkbox-group>
               </div>
               <div v-else>
-                <el-select class="paramInput" v-model="selectProductParam[index].value">
+                <el-select class="paramInput" v-model="selectProductParam[index].values">
                   <el-option
                     v-for="item in getParamInputList(item.inputList)"
                     :key="item"
@@ -108,7 +108,7 @@
             </div>
             <div
               v-else>
-              <el-input  class="paramInput" v-model="selectProductParam[index].value"></el-input>
+              <el-input  class="paramInput" v-model="selectProductParam[index].values"></el-input>
             </div>
           </div>
         </el-card>
@@ -252,7 +252,7 @@ export default {
                 values: values
               })
             } else {
-              const value = list[i].selectType === 2?[]:null
+              const values = list[i].selectType === 2 ? [] : null
               this.selectProductParam.push({
                 id: list[i].id,
                 name: list[i].name,
@@ -260,7 +260,7 @@ export default {
                 inputList: list[i].inputList,
                 selectType: list[i].selectType,
                 type: list[i].type,
-                value: value
+                values: values
               })
             }
           }
@@ -396,16 +396,30 @@ export default {
         this.productParam.productAttributeValueList.push({
           productAttributeId: attr.id,
           type: attr.type,
-          value: attr.values
-        });
+          value: this.getStrValue(attr.values)
+        })
       }
       for (let i = 0; i < this.selectProductParam.length; i++) {
         const param = this.selectProductParam[i];
         this.productParam.productAttributeValueList.push({
           productAttributeId: param.id,
           type: param.type,
-          value: param.value
-        });
+          value: this.getStrValue(param.values)
+        })
+      }
+    },
+    getStrValue(arr) {
+      if (arr instanceof Array) {
+        let result = ''
+        for (let i = 0; i < arr.length; i++) {
+          result = result + arr[i]
+          if (i !== arr.length - 1) {
+            result = result + ','
+          }
+        }
+        return result
+      } else {
+        return arr
       }
     },
     // 合并商品属性图片

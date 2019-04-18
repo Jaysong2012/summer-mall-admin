@@ -58,9 +58,9 @@ const defaultProductParam = {
   flashPromotionId: 0,
   flashPromotionPrice: 0,
   flashPromotionSort: 0,
-  // 积分
+  // 赠送积分
   giftPoint: 0,
-  // 成长值
+  // 赠送成长值
   giftGrowth: 0,
   // 关键字
   keywords: '',
@@ -68,7 +68,7 @@ const defaultProductParam = {
   name: '',
   // 是否是新上线
   newStatus: 0,
-
+  // 标记
   note: '',
   // 市场价
   originalPrice: 0,
@@ -88,8 +88,9 @@ const defaultProductParam = {
   productAttributeCategoryId: null,
   // 商品属性相关{productAttributeId: 0, value: ''}
   productAttributeValueList: [],
-  // 商品sku库存信息{lowStock: 0, pic: '', price: 0, sale: 0, skuCode: '', sp1: '', sp2: '', sp3: '', stock: 0}
+  // 商品sku库存信息{lowStock: 0, pic: '', price: 0, sale: 0, skuCode: '', stock: 0}
   skuStockList: [],
+  // 产品颜色预览图列表
   productColorPictureList: [],
   // 商品相关专题{subjectId: 0}
   subjectProductRelationList: [],
@@ -100,21 +101,36 @@ const defaultProductParam = {
   productCategoryName: '',
   // 产品编号
   productSn: '',
+  // 促销结束时间
   promotionEndTime: '',
+  // 促销限购数量
   promotionPerLimit: 0,
+  // 促销价格
   promotionPrice: null,
+  // 促销开始时间
   promotionStartTime: '',
+  // 促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购
   promotionType: 0,
+  // 发布状态
   publishStatus: 0,
+  // 是否推荐状态
   recommandStatus: 0,
+  // 销量
   sale: 0,
+  // 以逗号分割的产品服务：1->无忧退货；2->快速退款；3->免费包邮
   serviceIds: '',
+  // 排序
   sort: 0,
   stock: 0,
+  // 二级标题
   subTitle: '',
+  // 记件数
   unit: '',
+  // 限制使用的积分数
   usePointLimit: 0,
+  // 审核状态
   verifyStatus: 0,
+  // 产品净重
   weight: 0
 }
 
@@ -171,6 +187,7 @@ export default {
       }
     },
     prevStep() {
+      console.log(this.productParam)
       if (this.active > 0 && this.active < this.showStatus.length) {
         this.active--
         this.hideAll()
@@ -178,6 +195,7 @@ export default {
       }
     },
     nextStep() {
+      console.log(this.productParam)
       if (this.active < this.showStatus.length - 1) {
         this.active++
         this.hideAll()
@@ -185,6 +203,7 @@ export default {
       }
     },
     finishCommit() {
+      console.log(this.productParam)
       this.$confirm('是否要提交该产品', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
