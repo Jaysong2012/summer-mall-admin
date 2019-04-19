@@ -88,7 +88,7 @@ export default {
   },
   watch: {
     productParam(param) {
-      if (this.param.id === 0) {
+      if (param.id === 0) {
 
       }
     }

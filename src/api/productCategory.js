@@ -16,11 +16,11 @@ export function conditionProductCategoryTree() {
 }
 
 export function conditionSelectedProductCategoryIdTree(id) {
-  const data = { id: id }
+  const params = { id: id }
   return request({
-    url: '/product/product-category/id-tree',
+    url: '/condition/product-category/id-tree',
     method: 'post',
-    data: data
+    params: params
   })
 }
 

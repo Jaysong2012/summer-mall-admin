@@ -29,7 +29,7 @@ export default {
   },
   watch: {
     selectedId(id) {
-      if (this.selectedOptions[this.selectedOptions.length - 1] !== id) {
+      if (id !== undefined && id !== null && this.selectedOptions[this.selectedOptions.length - 1] !== id) {
         this.resetSelectOPtions(id)
       }
     }

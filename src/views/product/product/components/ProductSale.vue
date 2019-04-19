@@ -58,7 +58,7 @@
         <el-input v-model="productParam.note" type="textarea" :autoSize="true"></el-input>
       </el-form-item>
       <el-form-item label="选择优惠方式：">
-        <el-radio-group v-model="productParam.promotionType" size="small">
+        <el-radio-group v-model="productParam.promotionType" size="small" @change="handlePromotionTypeChange">
           <el-radio-button :label="0">无优惠</el-radio-button>
           <el-radio-button :label="1">特惠促销</el-radio-button>
           <el-radio-button :label="2">会员价格</el-radio-button>
@@ -189,7 +189,6 @@ export default {
   },
   watch: {
     productParam(param) {
-      this.initMemberLevelList()
     }
   },
   computed: {
@@ -249,7 +248,7 @@ export default {
       }
     },
     handleRemoveProductLadder(index, row) {
-      let productLadderList = this.productParam.productLadderList
+      const productLadderList = this.productParam.productLadderList
       if (productLadderList.length === 1) {
         productLadderList.pop()
         productLadderList.push({
@@ -262,7 +261,7 @@ export default {
       }
     },
     handleAddProductLadder(index, row) {
-      let productLadderList = this.productParam.productLadderList
+      const productLadderList = this.productParam.productLadderList
       if (productLadderList.length < 3) {
         productLadderList.push({
           count: 0,
@@ -307,6 +306,20 @@ export default {
     },
     handleNext() {
       this.$emit('nextStep')
+    },
+    handlePromotionTypeChange(type) {
+      switch (type) {
+        case 3:
+          if (this.productParam.productLadderList === null || this.productParam.productLadderList === undefined) {
+            this.productParam.productLadderList = [{ count: 0, discount: 0, price: 0 }]
+          }
+          break
+        case 4:
+          if (this.productParam.productFullReductionList === undefined || this.productParam.productFullReductionList === null) {
+            this.productParam.productFullReductionList = [{ fullPrice: 0, reducePrice: 0 }]
+          }
+          break
+      }
     }
   }
 }

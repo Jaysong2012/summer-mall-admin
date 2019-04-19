@@ -16,6 +16,14 @@ export function statusProduct(data) {
   })
 }
 
+export function batchStatusProduct(data) {
+  return request({
+    url: '/product/product/batch-status',
+    method: 'post',
+    data
+  })
+}
+
 export function saveProduct(data) {
   return request({
     url: '/product/product/save',

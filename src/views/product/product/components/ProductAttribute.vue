@@ -56,10 +56,11 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="SKU编号"
+            label="销量"
+            width="80"
             align="center">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.skuCode"></el-input>
+              <el-input v-model="scope.row.sale"></el-input>
             </template>
           </el-table-column>
         </el-table>
@@ -193,7 +194,7 @@ export default {
     }
   },
   created() {
-
+    this.handleEditCreated()
   },
   watch: {
     productId: function(newValue) {
@@ -205,23 +206,30 @@ export default {
     handleEditCreated() {
       // 根据商品属性分类id获取属性和参数
       if (this.productParam.productAttributeCategoryId !== null && this.productParam.productAttributeCategoryId !== 0) {
-        this.handleProductAttrChange(this.productParam.productAttributeCategoryId);
+        this.handleProductAttrChange(this.productParam.productAttributeCategoryId)
       }
+
+      this.fixEditProductSkuList()
     },
     // 获取设置的可手动添加属性值
-    getEditAttrOptions(id) {
-      const options = []
+    getProductAttrParamValues(id) {
+      let values = null
       for (let i = 0; i < this.productParam.productAttributeValueList.length; i++) {
         const attrValue = this.productParam.productAttributeValueList[i]
         if (attrValue.productAttributeId === id) {
-          const strArr = attrValue.value.split(',')
-          for (let j = 0; j < strArr.length; j++) {
-            options.push(strArr[j])
+          if (attrValue.selectType === 2) {
+            values = []
+            const strArr = attrValue.value.split(',')
+            for (let j = 0; j < strArr.length; j++) {
+              values.push(strArr[j])
+            }
+          } else {
+            values = attrValue.value
           }
           break
         }
       }
-      return options
+      return values
     },
     handleProductAttrChange(id) {
       conditionProductAttributeList({ id: id }).then(response => {
@@ -231,15 +239,11 @@ export default {
           this.selectProductParam = []
           for (let i = 0; i < list.length; i++) {
             if (list[i].type === 1) {
-              const values = []
-              // if (this.productParam.id !== 0) {
-              //   if (list[i].handAddStatus === 1) {
-              //     // 编辑状态下获取手动添加编辑属性
-              //     options = this.getEditAttrOptions(list[i].id);
-              //   }
-              //   // 编辑状态下获取选中属性
-              //   values = this.getEditAttrValues(i);
-              // }
+              let values = []
+              if (this.productParam.id !== 0) {
+                // 编辑状态下获取选中属性
+                values = this.getProductAttrValues(list[i].id)
+              }
               this.selectProductAttr.push({
                 id: list[i].id,
                 name: list[i].name,
@@ -247,12 +251,16 @@ export default {
                 inputList: list[i].inputList,
                 selectType: list[i].selectType,
                 type: list[i].type,
-                // handAddStatus: list[i].handAddStatus,
-                handAddStatus: 0,
                 values: values
               })
             } else {
-              const values = list[i].selectType === 2 ? [] : null
+              let values = null
+              if (this.productParam.id !== 0) {
+                // 编辑状态下获取选中属性
+                values = this.getProductAttrParamValues(list[i].id)
+              } else {
+                values = list[i].selectType === 2 ? [] : null
+              }
               this.selectProductParam.push({
                 id: list[i].id,
                 name: list[i].name,
@@ -310,10 +318,19 @@ export default {
           })
         }
         skuObj.attrArr = attrArr
+        skuObj.sale = 0
         mySKUList.push(skuObj)
       }
 
       this.productParam.skuStockList = mySKUList
+    },
+    fixEditProductSkuList() {
+      for (let i = 0; i < this.productParam.skuStockList.length; i++) {
+        for (let j = 0; j < this.productParam.skuStockList[i].attrArr.length; j++) {
+          this.productParam.skuStockList[i][this.productParam.skuStockList[i].attrArr[j].attrId] = this.productParam.skuStockList[i].attrArr[j].attrValue
+        }
+      }
+      console.log(this.productParam.skuStockList)
     },
     getProductAttrIdValue(id, valueStr) {
       const idNext = String(valueStr).split(id + '_')[1]
@@ -382,9 +399,24 @@ export default {
       // }
       // return null;
     },
+    // 获取已选择的属性值
+    getProductAttrValues(id) {
+      const values = []
+      for (let i = 0; i < this.productParam.productAttributeValueList.length; i++) {
+        const attrValue = this.productParam.productAttributeValueList[i]
+        if (attrValue.productAttributeId === id) {
+          const strArr = attrValue.value.split(',')
+          for (let j = 0; j < strArr.length; j++) {
+            values.push(strArr[j])
+          }
+          break
+        }
+      }
+      return values
+    },
     // 合并商品属性
     mergeProductAttrValue() {
-      this.productParam.productAttributeValueList = [];
+      this.productParam.productAttributeValueList = []
       for (let i = 0; i < this.selectProductAttr.length; i++) {
         const attr = this.selectProductAttr[i]
         // if (attr.handAddStatus === 1 && attr.options != null && attr.options.length > 0) {
@@ -396,6 +428,7 @@ export default {
         this.productParam.productAttributeValueList.push({
           productAttributeId: attr.id,
           type: attr.type,
+          selectType: attr.selectType,
           value: this.getStrValue(attr.values)
         })
       }
@@ -404,6 +437,7 @@ export default {
         this.productParam.productAttributeValueList.push({
           productAttributeId: param.id,
           type: param.type,
+          selectType: param.selectType,
           value: this.getStrValue(param.values)
         })
       }
